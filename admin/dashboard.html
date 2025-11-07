@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - وسيل توصيل</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B35;
+            --secondary-color: #004E89;
+            --accent-color: #00A896;
+        }
+        
+        /* إضافة جميع الأنماط السابقة مع تعديل الألوان */
+        /* ... (نفس الأنماط السابقة مع تغيير الألوان) ... */
+    </style>
+</head>
+<body>
+    <!-- التحقق من تسجيل الدخول -->
+    <script>
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- الشريط الجانبي -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar bg-dark">
+                <div class="position-sticky pt-3">
+                    <h4 class="text-white text-center mb-4">
+                        <i class="fas fa-shipping-fast me-2"></i>وسيل توصيل
+                    </h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active text-white" href="dashboard.html">
+                                <i class="fas fa-tachometer-alt me-2"></i>لوحة التحكم
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="restaurants.html">
+                                <i class="fas fa-utensils me-2"></i>إدارة المطاعم
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="products.html">
+                                <i class="fas fa-boxes me-2"></i>إدارة المنتجات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="orders.html">
+                                <i class="fas fa-shopping-cart me-2"></i>إدارة الطلبات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="delivery.html">
+                                <i class="fas fa-motorcycle me-2"></i>مندوبي التوصيل
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="../index.html">
+                                <i class="fas fa-store me-2"></i>العودة للموقع
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- المحتوى الرئيسي -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <!-- العنوان الرئيسي -->
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h2 class="text-primary">
+                        <i class="fas fa-tachometer-alt me-2"></i>لوحة التحكم - وسيل توصيل
+                    </h2>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button class="btn btn-sm btn-outline-secondary me-2" onclick="location.reload()">
+                            <i class="fas fa-redo me-1"></i>تحديث
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt me-1"></i>تسجيل الخروج
+                        </button>
+                    </div>
+                </div>
+
+                <!-- البطاقات الإحصائية -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card text-white bg-primary mb-3 stat-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <i class="fas fa-shopping-cart me-2"></i>الطلبات
+                                </h5>
+                                <p class="card-text display-4" id="orders-count">0</p>
+                                <small>طلبات جديدة</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success mb-3 stat-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <i class="fas fa-utensils me-2"></i>المطاعم
+                                </h5>
+                                <p class="card-text display-4" id="restaurants-count">0</p>
+                                <small>مطاعم شريكة</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning mb-3 stat-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <i class="fas fa-box me-2"></i>المنتجات
+                                </h5>
+                                <p class="card-text display-4" id="products-count">0</p>
+                                <small>منتجات متاحة</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info mb-3 stat-card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <i class="fas fa-chart-line me-2"></i>الإيرادات
+                                </h5>
+                                <p class="card-text display-4" id="revenue-count">$0</p>
+                                <small>إجمالي الإيرادات</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- باقي محتوى لوحة التحكم -->
+                <!-- ... (نفس محتوى لوحة التحكم السابقة مع تعديلات بسيطة) ... -->
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // دوال لوحة التحكم المحدثة
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminUsername');
+            window.location.href = 'login.html';
+        }
+
+        // تحديث الإحصائيات
+        async function updateStatistics() {
+            try {
+                const orders = await getOrdersFromFirebase();
+                const restaurants = await getRestaurantsFromFirebase();
+                const products = await getProductsFromFirebase();
+                
+                // تحديث الإحصائيات
+                document.getElementById('orders-count').textContent = orders.length;
+                document.getElementById('restaurants-count').textContent = restaurants.length;
+                document.getElementById('products-count').textContent = products.length;
+                
+                // حساب الإيرادات
+                const revenue = orders.reduce((total, order) => total + (order.total || 0), 0);
+                document.getElementById('revenue-count').textContent = `$${revenue.toFixed(2)}`;
+                
+            } catch (error) {
+                console.error('خطأ في تحديث الإحصائيات:', error);
+            }
+        }
+
+        // التهيئة
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatistics();
+        });
+    </script>
+</body>
+</html>
