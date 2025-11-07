@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وسيل توصيل - خدمة توصيل سريعة</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B35;
+            --secondary-color: #004E89;
+            --accent-color: #00A896;
+            --light-color: #f8f9fa;
+            --dark-color: #2B2D42;
+            --success-color: #4bb543;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* تحسينات عامة */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23ffffff" opacity="0.1"><path d="M500 50Q600 0 700 50T900 50T1000 0V100H0V0Q100 50 300 50T500 50Z"/></svg>');
+            background-size: cover;
+            background-position: bottom;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, var(--success-color), #3a9d3a);
+            border: none;
+        }
+        
+        .feature-box {
+            padding: 30px 20px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+        
+        .feature-box i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        /* تحسينات الشريط الجانبي */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: #fff !important;
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background-color: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+        
+        /* بطاقات الإحصائيات */
+        .stat-card {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* تحسينات البحث */
+        .search-container {
+            position: relative;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+        
+        /* تحسينات لوحة التحكم */
+        .admin-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .admin-card .card-header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* تحسينات المنتجات */
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1;
+        }
+        
+        .price-tag {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* تحسينات الفوتر */
+        footer {
+            background: var(--dark-color);
+            color: white;
+        }
+        
+        /* تحسينات التحميل */
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* تحسينات السلة */
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* تحسينات خاصة بالتوصيل */
+        .delivery-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .tracking-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: -50px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tracking-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 40px 0;
+        }
+        
+        .tracking-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+        
+        .tracking-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+        
+        .step-active .step-icon {
+            background: var(--accent-color);
+        }
+        
+        .delivery-partner-card {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .delivery-partner-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+        
+        /* تحسينات التجاوب */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+            .tracking-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .tracking-steps::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-shipping-fast me-2"></i>وسيل توصيل
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="fas fa-home me-1"></i> الرئيسية
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="restaurants.html">
+                            <i class="fas fa-utensils me-1"></i> المطاعم
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tracking.html">
+                            <i class="fas fa-map-marker-alt me-1"></i> تتبع الطلب
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            <i class="fas fa-info-circle me-1"></i> من نحن
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="fas fa-phone me-1"></i> اتصل بنا
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin/login.html">
+                            <i class="fas fa-cog me-1"></i> لوحة التحكم
+                        </a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="cart.html">
+                            <i class="fas fa-shopping-cart me-1"></i> السلة
+                            <span id="cart-count" class="cart-badge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- قسم الهيرو -->
+    <section class="delivery-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">وسيل توصيل - أسرع خدمة توصيل</h1>
+                    <p class="lead mb-4">اطلب من أفضل المطاعم والمتاجر في مدينتك واستمتع بتوصيل سريع وآمن إلى باب منزلك</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="restaurants.html" class="btn btn-light btn-lg">
+                            <i class="fas fa-utensils me-2"></i> استعرض المطاعم
+                        </a>
+                        <a href="tracking.html" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-map-marker-alt me-2"></i> تتبع طلبك
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3699/3699708.png" alt="توصيل طلبات" class="img-fluid" style="max-height: 400px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تتبع الطلب -->
+    <section class="py-5">
+        <div class="container">
+            <div class="tracking-card">
+                <h3 class="text-center mb-4">
+                    <i class="fas fa-shipping-fast me-2"></i>تتبع حالة طلبك
+                </h3>
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control form-control-lg" placeholder="أدخل رقم الطلب...">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-search me-2"></i> تتبع الطلب
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- خطوات التتبع -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">كيفية تتبع طلبك</h2>
+            <div class="tracking-steps">
+                <div class="tracking-step step-active">
+                    <div class="step-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h6>تم استلام الطلب</h6>
+                    <small class="text-muted">تم تأكيد طلبك</small>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h6>جارٍ التحضير</h6>
+                    <small class="text-muted">المطعم يجهز طلبك</small>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h6>تم التجهيز</h6>
+                    <small class="text-muted">طلبك جاهز للتسليم</small>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                    <h6>في الطريق</h6>
+                    <small class="text-muted">مندوب التوصيل في الطريق</small>
+                </div>
+                <div class="tracking-step">
+                    <div class="step-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h6>تم التسليم</h6>
+                    <small class="text-muted">تم تسليم طلبك</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- المطاعم المميزة -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">المطاعم والمتاجر الشريكة</h2>
+            <div class="row" id="featured-restaurants">
+                <!-- المطاعم تُحمّل من JavaScript -->
+                <div class="col-12 text-center">
+                    <div class="loading-spinner"></div>
+                    <p class="mt-3">جاري تحميل المطاعم...</p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="restaurants.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-list me-2"></i> عرض جميع المطاعم
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- المميزات -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">لماذا تختار وسيل توصيل؟</h2>
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-bolt"></i>
+                        <h3>توصيل سريع</h3>
+                        <p>توصيل في أقل من 30 دقيقة مع مندوبين محترفين</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>دفع آمن</h3>
+                        <p>أنظمة دفع إلكتروني آمنة ومشفرة لحماية معلوماتك</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <i class="fas fa-headset"></i>
+                        <h3>دعم فني</h3>
+                        <p>دعم فني متاح 24/7 لخدمتكم عبر الهاتف والواتساب</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- شركاء التوصيل -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">شركاؤنا في التوصيل</h2>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="delivery-partner-card text-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2200/2200326.png" alt="مطعم" class="img-fluid mb-3" style="height: 80px;">
+                        <h5>مطاعم مميزة</h5>
+                        <p class="text-muted">أشهر المطاعم في المدينة</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="delivery-partner-card text-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/859/859265.png" alt="سوبرماركت" class="img-fluid mb-3" style="height: 80px;">
+                        <h5>سوبرماركت</h5>
+                        <p class="text-muted">تسوق من أفضل المتاجر</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="delivery-partner-card text-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081985.png" alt="مقهى" class="img-fluid mb-3" style="height: 80px;">
+                        <h5>مقاهي</h5>
+                        <p class="text-muted">أجود أنواع القهوة</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="delivery-partner-card text-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" alt="حلويات" class="img-fluid mb-3" style="height: 80px;">
+                        <h5>حلويات</h5>
+                        <p class="text-muted">أشهى أنواع الحلويات</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>
+                        <i class="fas fa-shipping-fast me-2"></i>وسيل توصيل
+                    </h5>
+                    <p>أسرع خدمة توصيل في المدينة، نضمن لك الوصول في الوقت المحدد.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>روابط سريعة</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="restaurants.html" class="text-white-50">المطاعم</a></li>
+                        <li><a href="tracking.html" class="text-white-50">تتبع الطلب</a></li>
+                        <li><a href="about.html" class="text-white-50">من نحن</a></li>
+                        <li><a href="contact.html" class="text-white-50">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>تواصل معنا</h5>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 وسيل توصيل. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-db.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        // كود الصفحة الرئيسية للتوصيل
+        console.log('✅ تم تحميل الصفحة الرئيسية للتوصيل');
+
+        // عرض المطاعم المميزة
+        async function displayFeaturedRestaurants() {
+            const container = document.getElementById('featured-restaurants');
+            if (!container) return;
+
+            try {
+                // في نظام التوصيل، نعرض المطاعم بدلاً من المنتجات
+                const restaurants = await getRestaurantsFromFirebase();
+                container.innerHTML = '';
+
+                // عرض آخر 6 مطاعم
+                const featuredRestaurants = restaurants.slice(-6).reverse();
+
+                if (featuredRestaurants.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-12 text-center">
+                            <div class="alert alert-info p-4">
+                                <h4><i class="fas fa-utensils me-2"></i>مرحبا بكم في وسيل توصيل!</h4>
+                                <p class="mb-3">لم يتم إضافة مطاعم بعد</p>
+                                <a href="admin/login.html" class="btn btn-primary mt-2">
+                                    <i class="fas fa-plus me-2"></i>إضافة مطاعم
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                featuredRestaurants.forEach(restaurant => {
+                    const restaurantCard = `
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 restaurant-card">
+                                <div class="position-relative">
+                                    <img src="${restaurant.image}" class="card-img-top product-image" alt="${restaurant.name}">
+                                    <span class="badge bg-primary product-badge">${restaurant.category}</span>
+                                    ${restaurant.isOpen ? `
+                                        <span class="badge bg-success position-absolute top-0 end-0 m-2">مفتوح</span>
+                                    ` : `
+                                        <span class="badge bg-danger position-absolute top-0 end-0 m-2">مغلق</span>
+                                    `}
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">${restaurant.name}</h5>
+                                    <p class="card-text text-muted flex-grow-1">${restaurant.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                                        <div>
+                                            <small class="text-warning">
+                                                <i class="fas fa-star"></i> ${restaurant.rating || '4.5'}
+                                            </small>
+                                            <small class="text-muted ms-2">
+                                                <i class="fas fa-clock"></i> ${restaurant.deliveryTime || '30-45'} دقيقة
+                                            </small>
+                                        </div>
+                                        <a href="restaurant.html?id=${restaurant.id}" class="btn btn-primary">
+                                            <i class="fas fa-eye me-1"></i> عرض القائمة
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += restaurantCard;
+                });
+            } catch (error) {
+                console.error('❌ خطأ في عرض المطاعم:', error);
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>حدث خطأ في تحميل المطاعم
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // دالة الحصول على المطاعم (بديلة للمنتجات في نظام التوصيل)
+        async function getRestaurantsFromFirebase() {
+            console.log('🔄 محاولة جلب المطاعم من Firebase...');
+            
+            if (!window.db) {
+                console.error('❌ قاعدة البيانات غير متاحة');
+                return [];
+            }
+            
+            try {
+                const snapshot = await window.db.collection('restaurants').orderBy('createdAt', 'desc').get();
+                const restaurants = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    restaurants.push({ 
+                        id: doc.id, 
+                        name: data.name || 'مطعم بدون اسم',
+                        description: data.description || 'لا يوجد وصف',
+                        category: data.category || 'مطعم',
+                        image: data.image || 'https://via.placeholder.com/300x200/cccccc/ffffff?text=لا+توجد+صورة',
+                        rating: data.rating || '4.5',
+                        deliveryTime: data.deliveryTime || '30-45',
+                        isOpen: data.isOpen !== undefined ? data.isOpen : true,
+                        dateAdded: data.dateAdded || new Date().toISOString(),
+                        createdAt: data.createdAt
+                    });
+                });
+                console.log('✅ تم جلب المطاعم بنجاح:', restaurants.length);
+                return restaurants;
+            } catch (error) {
+                console.error('❌ فشل جلب المطاعم:', error);
+                return [];
+            }
+        }
+
+        // البحث العالمي
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('global-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    if (searchTerm.length > 2) {
+                        window.location.href = `restaurants.html?search=${encodeURIComponent(searchTerm)}`;
+                    }
+                });
+            }
+        });
+
+        // تحديث عدد العناصر في السلة
+        function updateCartCount() {
+            const cart = getCart();
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) {
+                cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+            }
+        }
+
+        // التهيئة
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 الصفحة الرئيسية للتوصيل جاهزة');
+            displayFeaturedRestaurants();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
